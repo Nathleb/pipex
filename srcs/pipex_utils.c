@@ -6,11 +6,23 @@
 /*   By: nle-biha <nle-biha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:16:25 by nle-biha          #+#    #+#             */
-/*   Updated: 2021/06/08 15:33:17 by nle-biha         ###   ########.fr       */
+/*   Updated: 2021/06/08 20:05:06 by nle-biha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	return_error(int err, char **cmd, char **paths)
+{
+	if (err == -1)
+	{
+		free_nulltermchartab(cmd);
+		free_nulltermchartab(paths);
+		perror("Error");
+		exit(1);
+	}
+	return (0);
+}
 
 char	*get_env_value(char *env_var, char **envp)
 {
@@ -34,9 +46,12 @@ int	execvp_mutiple_path(char **cmd, char **paths)
 	char	*complete_cmd;
 
 	i = 0;
+	execvp(cmd[0], cmd);
 	while (paths[i])
 	{
 		complete_cmd = ft_strjoin3(paths[i], "/", cmd[0]);
+		if (complete_cmd == NULL)
+			return_error(-1, cmd, paths);
 		execvp(complete_cmd, cmd);
 		free(complete_cmd);
 		i++;
