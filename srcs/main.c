@@ -6,7 +6,7 @@
 /*   By: nle-biha <nle-biha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 16:10:56 by nle-biha          #+#    #+#             */
-/*   Updated: 2021/06/08 20:06:17 by nle-biha         ###   ########.fr       */
+/*   Updated: 2021/06/08 20:09:02 by nle-biha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	runcmd2(int filfd, int *pipfd, char **cmd, char **paths)
 		close(pipfd[1]);
 		return_error(dup2(pipfd[0], 0), cmd, paths);
 		execvp_mutiple_path(cmd, paths);
-		return_error(-1, cmd, paths);	
+		return_error(-1, cmd, paths);
 	}
 	else if (pid == -1)
 		perror("fork cmd2");
@@ -45,7 +45,7 @@ int	runcmd1(int filfd, int *pipfd, char **cmd, char **paths)
 		return_error(dup2(filfd, 0), cmd, paths);
 		return_error(dup2(pipfd[1], 1), cmd, paths);
 		execvp_mutiple_path(cmd, paths);
-		return_error(-1, cmd, paths);	
+		return_error(-1, cmd, paths);
 	}
 	else if (pid == -1)
 		perror("fork cmd1");
