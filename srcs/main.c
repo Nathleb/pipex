@@ -6,13 +6,13 @@
 /*   By: nle-biha <nle-biha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 16:10:56 by nle-biha          #+#    #+#             */
-/*   Updated: 2021/06/08 20:09:02 by nle-biha         ###   ########.fr       */
+/*   Updated: 2021/06/12 16:06:42 by nle-biha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	runcmd2(int filfd, int *pipfd, char **cmd, char **paths)
+void	runcmd2(int filfd, int *pipfd, char **cmd, char **paths)
 {
 	int	pid;
 	int	i;
@@ -28,14 +28,17 @@ int	runcmd2(int filfd, int *pipfd, char **cmd, char **paths)
 		return_error(-1, cmd, paths);
 	}
 	else if (pid == -1)
-		perror("fork cmd2");
-	return (1);
+	{
+		perror("fork cmd1");
+		exit (1);
+	}
 }
 
-int	runcmd1(int filfd, int *pipfd, char **cmd, char **paths)
+void	runcmd1(int filfd, int *pipfd, char **cmd, char **paths)
 {
 	int	pid;
 	int	i;
+	int	status;
 
 	i = 0;
 	pid = fork();
@@ -48,8 +51,16 @@ int	runcmd1(int filfd, int *pipfd, char **cmd, char **paths)
 		return_error(-1, cmd, paths);
 	}
 	else if (pid == -1)
+	{
 		perror("fork cmd1");
-	return (1);
+		exit (1);
+	}
+	else
+	{
+		pid = wait(&status);
+		while (pid != -1)
+			pid = wait(&status);
+	}
 }
 
 void	close_all(int *pipfd, int *filfd, char **cmd, char **paths)
